@@ -38,3 +38,11 @@ app.use((err, req, res, next) => {
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), " port is waiting for...");
 });
+
+var router = express.Router()
+
+router.get('/', function(req, res, next) {
+  res.status(200).json({
+      message:"sopt 서버 여러분 안녕하세요~,sopt-Media에 좋아요와 댓글 부탁드립니다!!(꾸벅)",
+  })
+});
