@@ -5,7 +5,8 @@ const connect = () => {
     mongoose.set("debug", true);
   }
   mongoose.connect(
-    "mongodb://jidole02:fprhwhdk1214@localhost:27017/admin",
+    process.env.MONGO_URL ||
+      "mongodb://jidole02:fprhwhdk1214@localhost:27017/admin",
     {
       dbName: "sellery_book",
       useNewUrlParser: true,

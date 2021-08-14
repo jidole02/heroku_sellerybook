@@ -22,7 +22,7 @@ app.use("/pbook", require("./routes/pbook"));
 app.use("/comment", require("./routes/comment"));
 
 app.get("/", (req, res, next) => {
-  res.send("adsfkjad");
+  res.send("열렸습니다.");
 });
 
 app.use((req, res, next) => {
