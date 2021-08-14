@@ -21,7 +21,12 @@ app.use("/book", require("./routes/book"));
 app.use("/pbook", require("./routes/pbook"));
 app.use("/comment", require("./routes/comment"));
 
+app.get("/", (req, res, next) => {
+  res.send("adsfkjad");
+});
+
 app.use((req, res, next) => {
+  console.log("에러 발생1");
   const err = new Error(`${req.method} ${req.url} router is not find`);
   console.log(err);
   err.status = 404;
@@ -29,6 +34,7 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  console.log("에러 발생2");
   res.locals.message = err.message;
   res.locals.error = process.env.NODE_ENV !== "production" ? err : {};
   res.status(err.status || 500);
@@ -37,12 +43,4 @@ app.use((err, req, res, next) => {
 
 app.listen(app.get("port"), () => {
   console.log(app.get("port"), " port is waiting for...");
-});
-
-var router = express.Router()
-
-router.get('/', function(req, res, next) {
-  res.status(200).json({
-      message:"sopt 서버 여러분 안녕하세요~,sopt-Media에 좋아요와 댓글 부탁드립니다!!(꾸벅)",
-  })
 });
