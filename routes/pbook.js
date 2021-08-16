@@ -46,14 +46,23 @@ router.route("/get/:condition").get(async (req, res, next) => {
     }
     if (condition === "genre") {
       const genre = req.query.genre;
-      const books = await publishBook.find({ genre: genre }).limit(5);
+      const books = await publishBook
+        .find({ genre: genre })
+        .sort({ date: -1 })
+        .limit(5);
       return res.status(201).json(books);
     }
-    if(condition === "search"){
+    if (condition === "search") {
       const title = req.query.title;
       const option = [{ title: new RegExp(title) }];
-      const result = await publishBook.find({ $or: option });
-      res.status(201).json(result);
+      const result = await publishBook
+        .find({ $or: option })
+        .sort({ views: -1 });
+      return res.status(201).json(result);
+    }
+    if (condition === "contest") {
+      const books = await publishBook.find().sort({ views: -1 }).limit(20);
+      return res.status(201).json(books);
     }
   } catch (error) {
     console.log(error);
