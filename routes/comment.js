@@ -15,6 +15,16 @@ router
         return res.status(400);
       }
       const publishBookObj = await publishBook.findOne({ _id: req.params.id });
+      const user = await User.findOne({ token: req.token });
+      const user_id = user["_id"];
+      const user_name = user.nickname;
+      const isComment = await comment.find({
+        bookId: req.params.id,
+        writerId: user_id,
+      });
+      if (isComment.length > 0) {
+        return res.status(403).json({ message: "aleady exist" });
+      }
       if (publishBookObj.rate == 0) {
         await publishBook.updateOne(
           { _id: req.params.id },
@@ -28,9 +38,6 @@ router
           }
         );
       }
-      const user = await User.findOne({ token: req.token });
-      const user_id = user["_id"];
-      const user_name = user.nickname;
       const commentObj = await comment.create({
         writerId: user_id,
         writerName: user_name,
