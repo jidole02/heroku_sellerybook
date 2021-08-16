@@ -49,6 +49,12 @@ router.route("/get/:condition").get(async (req, res, next) => {
       const books = await publishBook.find({ genre: genre }).limit(5);
       return res.status(201).json(books);
     }
+    if(condition === "search"){
+      const title = req.query.title;
+      const option = [{ title: new RegExp(title) }];
+      const result = await publishBook.find({ $or: option });
+      res.status(201).json(result);
+    }
   } catch (error) {
     console.log(error);
     next(error);
