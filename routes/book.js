@@ -44,6 +44,10 @@ router
       const id = user["_id"];
       const name = user.nickname;
       const date = new Date();
+      const books = await Book.find({ writerId: id });
+      if (books.length > 1) {
+        return res.status(403).json({ message: "upload limit" });
+      }
       const book = await Book.create({
         writerId: id,
         writerName: name,
@@ -176,15 +180,15 @@ router.route("/publish").post(checkToken, async (req, res, next) => {
               const contentObj = await content.create({
                 contents: req.body.contents,
                 bookId: pBook["_id"],
-                title : book.title
+                title: book.title,
               });
               await Book.deleteOne({ _id: req.body.id });
-              res.status(201).json({pBook,contentObj});
+              res.status(201).json({ pBook, contentObj });
             }
           })
           .catch((err) => {
-            console.log(err)
-            next(err)
+            console.log(err);
+            next(err);
           });
       }
     });
